@@ -173,7 +173,7 @@ LRESULT CMainWindow::OnCreate(HWND hWnd)
 
 	m_pViewManager = new CViewManager(m_hWnd);
 
-	m_pLuminaImageTransfer = new CLuminaImageTransferor(m_pD2ImageDrawer->GetD2DeviceContext(), m_hWnd);
+	m_pLuminaImageTransferor = new CLuminaImageTransferor(m_pD2ImageDrawer->GetD2DeviceContext(), m_hWnd);
 
 	return 0;
 }
@@ -189,10 +189,16 @@ LRESULT CMainWindow::OnClose()
 {
 	::KillTimer(m_hWnd, Timer::kText);
 
-	if (m_pLuminaImageTransfer != nullptr)
+	if (m_pLuminaImageTransferor != nullptr)
 	{
-		delete m_pLuminaImageTransfer;
-		m_pLuminaImageTransfer = nullptr;
+		delete m_pLuminaImageTransferor;
+		m_pLuminaImageTransferor = nullptr;
+	}
+
+	if (m_pViewManager != nullptr)
+	{
+		delete m_pViewManager;
+		m_pViewManager = nullptr;
 	}
 
 	if (m_pD2TextWriter != nullptr)
@@ -225,7 +231,7 @@ LRESULT CMainWindow::OnPaint()
 	HDC hdc = ::BeginPaint(m_hWnd, &ps);
 
 	if (m_pD2ImageDrawer == nullptr || m_pD2TextWriter == nullptr 
-		|| m_pViewManager == nullptr || m_pLuminaImageTransfer ==  nullptr)
+		|| m_pViewManager == nullptr || m_pLuminaImageTransferor ==  nullptr)
 	{
 		::EndPaint(m_hWnd, &ps);
 		return 0;
@@ -235,7 +241,7 @@ LRESULT CMainWindow::OnPaint()
 
 	m_pD2ImageDrawer->Clear();
 
-	ID2D1Bitmap* pImage = m_pLuminaImageTransfer->GetCurrentImage();
+	ID2D1Bitmap* pImage = m_pLuminaImageTransferor->GetCurrentImage();
 	if (pImage != nullptr)
 	{
 		bRet = m_pD2ImageDrawer->Draw(pImage, { m_pViewManager->GetXOffset(), m_pViewManager->GetYOffset() }, m_pViewManager->GetScale());
@@ -358,9 +364,9 @@ LRESULT CMainWindow::OnMouseWheel(WPARAM wParam, LPARAM lParam)
 
 	if (usKey == MK_LBUTTON)
 	{
-		if (m_pLuminaImageTransfer != nullptr)
+		if (m_pLuminaImageTransferor != nullptr)
 		{
-			m_pLuminaImageTransfer->RescaleTimer(iScroll > 0);
+			m_pLuminaImageTransferor->RescaleTimer(iScroll > 0);
 		}
 		m_bLeftCombinated = true;
 	}
@@ -433,6 +439,11 @@ LRESULT CMainWindow::OnMButtonUp(WPARAM wParam, LPARAM lParam)
 		if (m_pViewManager != nullptr)
 		{
 			m_pViewManager->ResetZoom();
+		}
+
+		if (m_pLuminaImageTransferor != nullptr)
+		{
+			m_pLuminaImageTransferor->ResetSpeed();
 		}
 	}
 
@@ -581,7 +592,7 @@ void CMainWindow::MenuOnAudioSetting()
 /*一時停止*/
 void CMainWindow::MenuOnPauseImage()
 {
-	if (m_pLuminaImageTransfer != nullptr)
+	if (m_pLuminaImageTransferor != nullptr)
 	{
 		HMENU hMenuBar = ::GetMenu(m_hWnd);
 		if (hMenuBar != nullptr)
@@ -589,7 +600,7 @@ void CMainWindow::MenuOnPauseImage()
 			HMENU hMenu = ::GetSubMenu(hMenuBar, MenuBar::kImage);
 			if (hMenu != nullptr)
 			{
-				bool bRet = m_pLuminaImageTransfer->SwitchPause();
+				bool bRet = m_pLuminaImageTransferor->SwitchPause();
 				::CheckMenuItem(hMenu, Menu::kPauseImage, bRet ? MF_CHECKED : MF_UNCHECKED);
 			}
 		}
@@ -648,14 +659,14 @@ bool CMainWindow::SetupScenario(const wchar_t* pwzFilePath)
 	bool bRet = lumina::LoadScenario(pwzFilePath, m_textData, imageFileData);
 	if (!bRet)return false;
 
-	if (m_pLuminaImageTransfer != nullptr)
+	if (m_pLuminaImageTransferor != nullptr)
 	{
-		bRet = m_pLuminaImageTransfer->SetImages(imageFileData);
+		bRet = m_pLuminaImageTransferor->SetImages(imageFileData);
 		if (bRet)
 		{
 			unsigned int uiWidth = 0;
 			unsigned int uiHeight = 0;
-			m_pLuminaImageTransfer->GetImageSize(&uiWidth, &uiHeight);
+			m_pLuminaImageTransferor->GetImageSize(&uiWidth, &uiHeight);
 
 			if (m_pViewManager != nullptr)
 			{
@@ -688,9 +699,9 @@ void CMainWindow::UpdateScreen()
 /*表示図画送り・戻し*/
 void CMainWindow::ShiftPaintData(bool bForward)
 {
-	if (m_pLuminaImageTransfer != nullptr)
+	if (m_pLuminaImageTransferor != nullptr)
 	{
-		m_pLuminaImageTransfer->ShiftImage();
+		m_pLuminaImageTransferor->ShiftImage();
 	}
 
 	UpdatePaintData();

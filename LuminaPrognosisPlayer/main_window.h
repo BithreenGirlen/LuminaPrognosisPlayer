@@ -97,7 +97,7 @@ private:
 	CD2TextWriter* m_pD2TextWriter = nullptr;
 	CMfMediaPlayer* m_pAudioPlayer = nullptr;
 	CViewManager* m_pViewManager = nullptr;
-	CLuminaImageTransferor* m_pLuminaImageTransfer = nullptr;
+	CLuminaImageTransferor* m_pLuminaImageTransferor = nullptr;
 
 	std::vector<adv::TextDatum> m_textData;
 	size_t m_nTextIndex = 0;
