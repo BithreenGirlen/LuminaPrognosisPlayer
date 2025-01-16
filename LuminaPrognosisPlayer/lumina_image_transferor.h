@@ -29,7 +29,7 @@ public:
 	void ResetSpeed();
 private:
 	ID2D1DeviceContext* m_pStoredD2d1DeviceContext = nullptr;
-	HWND m_hRnderWindow = nullptr;
+	HWND m_hRenderWindow = nullptr;
 
 	std::vector<std::vector<CComPtr<ID2D1Bitmap>>> m_images;
 	size_t m_nImageIndex = 0;

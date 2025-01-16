@@ -6,7 +6,7 @@
 #include "win_image.h"
 
 CLuminaImageTransferor::CLuminaImageTransferor(ID2D1DeviceContext* pD2d1DeviceContext, HWND hWnd)
-	: m_pStoredD2d1DeviceContext(pD2d1DeviceContext), m_hRnderWindow(hWnd)
+	: m_pStoredD2d1DeviceContext(pD2d1DeviceContext), m_hRenderWindow(hWnd)
 {
 	m_winTimer.SetCallback(&CLuminaImageTransferor::TimerCallback, this);
 }
@@ -210,7 +210,7 @@ void CLuminaImageTransferor::TimerCallback(void* pData)
 	auto pThis = static_cast<CLuminaImageTransferor*>(pData);
 	if (pThis != nullptr)
 	{
-		HWND hWnd = pThis->m_hRnderWindow;
+		HWND hWnd = pThis->m_hRenderWindow;
 		if (hWnd != nullptr && ::IsWindow(hWnd))
 		{
 			::InvalidateRect(hWnd, nullptr, FALSE);
