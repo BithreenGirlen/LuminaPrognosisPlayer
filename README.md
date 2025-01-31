@@ -71,16 +71,16 @@ The scene will be set up assuming that relevant voice and image files exist in t
 | Image | Pause | Pause/resume animation.
 
 ## Mouse functions
-| Input | Action | Note |
+| Input | Action | Remark |
 | --- | --- | --- |
 | Mouse wheel | Scale up/down | |
-| Left button + mouse wheel | Speed up/down the animation | There is no function for still. |
+| Left button + mouse wheel | Speed up/down the animation | There is no function for still images. |
 | Left button click | Switch to the next still/animation. | |
 | Left button drag | Move view-point | This works only when the image is scaled beyond the monitor resolution. |
 | Middle button | Reset scaling, animation speed, and view-point. | |
 | Right button + mouse wheel | Show the next/previous text. | |
 | Right button + middle button |Hide/show window's frame. | Hiding frame lets window go to the origin of the primary monitor. |
-| Right button + left button | Move window. | This works only when the window's frame is hidden. |
+| Right button + left button | Move window. | This works only when the window's frame is being hidden. |
 
 ## Keyboard functions
 | Input | Action |
@@ -91,7 +91,7 @@ The scene will be set up assuming that relevant voice and image files exist in t
 | Up | Move on to the next folder. |
 | Down | Move on to the previous folder. |
 
-- The text will be rendered with `游明朝` font installed under Windows system folder.
+- The text will be rendered with installed `游明朝` font.
 
 ## External libraries
 - [JSON for Modern C++ v3.11.3](https://github.com/nlohmann/json/releases/tag/v3.11.3)
@@ -113,4 +113,4 @@ LuminaPrognosisPlayer
 
 ## Note
 
-- Mind that if the scene has animation part, huge memory consumption will be caused by loading all the animation images.
+The animation part is composed of lots of images. To avoid huge memory consumption by integrated graphics, it is recommended to set `High performance` for this application from Windows graphics setting if possible.
