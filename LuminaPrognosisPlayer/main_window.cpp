@@ -418,6 +418,7 @@ LRESULT CMainWindow::OnLButtonUp(WPARAM wParam, LPARAM lParam)
 		{
 			ShiftPaintData(true);
 		}
+		else
 		{
 			if (m_pViewManager != nullptr)
 			{
@@ -753,7 +754,7 @@ void CMainWindow::AutoTexting()
 /*表示文作成*/
 std::wstring CMainWindow::FormatCurrentText()
 {
-	if (m_nTextIndex > m_textData.size() - 1)return std::wstring();
+	if (m_nTextIndex >= m_textData.size())return std::wstring();
 
 	const adv::TextDatum& t = m_textData.at(m_nTextIndex);
 	std::wstring wstr = t.wstrText;
