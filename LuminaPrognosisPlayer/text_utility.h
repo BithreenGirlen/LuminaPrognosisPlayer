@@ -6,14 +6,13 @@
 
 namespace text_utility
 {
-	template <typename StringType>
-	void TextToLines(const StringType& text, std::vector<StringType>& lines)
+	template <typename CharType>
+	void TextToLines(const std::basic_string<CharType>& text, std::vector<std::basic_string<CharType>>& lines)
 	{
-		StringType temp{};
-		for (size_t i = 0; i < text.size(); ++i)
+		std::basic_string<CharType> temp{};
+		for (auto& c : text)
 		{
-			if (text[i] == static_cast<typename StringType::value_type>('\r') ||
-				text[i] == static_cast<typename StringType::value_type>('\n'))
+			if (c == CharType('\r') || c == CharType('\n'))
 			{
 				if (!temp.empty())
 				{
@@ -22,21 +21,22 @@ namespace text_utility
 				}
 				continue;
 			}
-			temp.push_back(text[i]);
+			temp.push_back(c);
 		}
+
 		if (!temp.empty())
 		{
 			lines.push_back(temp);
 		}
 	}
 
-	template <typename StringType, typename CharType>
-	void SplitTextBySeparator(const StringType& text, const CharType separator, std::vector<StringType>& splits)
+	template <typename CharType>
+	void SplitTextBySeparator(const std::basic_string<CharType>& text, const CharType separator, std::vector<std::basic_string<CharType>>& splits)
 	{
 		for (size_t nRead = 0; nRead < text.size();)
 		{
 			size_t nPos = text.find(separator, nRead);
-			if (nPos == StringType::npos)
+			if (nPos == std::basic_string<CharType>::npos)
 			{
 				size_t nLen = text.size() - nRead;
 				splits.emplace_back(text.substr(nRead, nLen));
@@ -49,38 +49,23 @@ namespace text_utility
 		}
 	}
 
-	template <typename StringType>
-	void ReplaceAll(StringType& src, const StringType& strOld, const StringType& strNew)
+	template <typename CharType>
+	void ReplaceAll(std::basic_string<CharType>& src, const std::basic_string<CharType>& strOld, const std::basic_string<CharType>& strNew)
 	{
-		if (strOld == strNew) return;
+		if (strOld.empty() || strOld == strNew) return;
 
 		for (size_t nRead = 0;;)
 		{
 			size_t nPos = src.find(strOld, nRead);
-			if (nPos == StringType::npos) break;
+			if (nPos == std::basic_string<CharType>::npos) break;
 			src.replace(nPos, strOld.size(), strNew);
 			nRead = nPos + strNew.size();
 		}
 	}
-	inline void ReplaceAll(std::wstring& text, const wchar_t* oldStr, const wchar_t* newStr)
+	template <typename CharType>
+	void ReplaceAll(std::basic_string<CharType>& src, const CharType* strOld, const CharType* strNew)
 	{
-		ReplaceAll<std::wstring>(text, std::wstring(oldStr), std::wstring(newStr));
-	}
-
-	inline void ReplaceAll(std::string& text, const char* oldStr, const char* newStr)
-	{
-		ReplaceAll<std::string>(text, std::string(oldStr), std::string(newStr));
-	}
-
-	template <typename StringType>
-	StringType ExtractDirectory(StringType& filePath)
-	{
-		size_t nPos = filePath.find_last_of(static_cast<typename StringType::value_type>("\\/"), nPos);
-		if (nPos != std::wstring::npos)
-		{
-			return filePath.substr(0, nPos);
-		}
-		return filePath;
+		ReplaceAll(src, std::basic_string<CharType>(strOld), std::basic_string<CharType>(strNew));
 	}
 }
 

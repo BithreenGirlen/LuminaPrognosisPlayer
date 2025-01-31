@@ -153,7 +153,6 @@
     <ClCompile Include="main_window.cpp" />
     <ClCompile Include="media_setting_dialogue.cpp" />
     <ClCompile Include="mf_media_player.cpp" />
-    <ClCompile Include="text_utility.cpp" />
     <ClCompile Include="view_manager.cpp" />
     <ClCompile Include="win_dialogue.cpp" />
     <ClCompile Include="win_filesystem.cpp" />

@@ -83,9 +83,6 @@
     <ClCompile Include="mf_media_player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="text_utility.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="view_manager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
